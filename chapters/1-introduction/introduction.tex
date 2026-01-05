@@ -1,0 +1,30 @@
+
+\section{Introduction}
+
+A regex is a syntax used to define a pattern
+that can then be matched against strings for
+validation or data extraction.
+
+To represent a regex $r$, one usually uses its
+non-deterministic finite automaton (NFA)
+\cite{thompson_programming_1968}, computed in $O(|r|)$
+time complexity and which has $O(|r|)$ nodes.
+
+\input{chapters/1-introduction/sample-nfas.tex}
+
+In the context of a regex, a capturing group $(X)$ can be used for the
+extraction of subpatterns in a string. For example, one could use the regex
+$(\textbackslash d \{ 4 \})-(\textbackslash d \{ 2 \})-(\textbackslash d \{ 2 \})$
+to extract the year, month and day from a date in YYYY-MM-DD format.
+
+To account for this, some special nodes are added to the NFA that
+perform an action when visited, such as tracking the current string
+position. For example, the node $\#1:entry$ keeps track of the index
+of the string at which it entered the group $1$.
+
+\input{chapters/1-introduction/capture-nfa.tex}
+
+\subsection{PikeVM Algorithm}
+
+% TODO write some introduction about NFA, thread, priority, bytecode
+% TODO also explain why there exists O(r) threads

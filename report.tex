@@ -1,0 +1,51 @@
+\documentclass[letterpaper, 10pt]{article}
+\input{template/preamble}
+\input{template/format}
+\input{template/commands}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}  % For general image handling
+\usepackage{geometry}  % To adjust margins for the front page
+
+\usepackage{tikz}
+\usepackage{textcomp}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage[backend=biber, style=numeric]{biblatex}
+\usetikzlibrary{arrows.meta,graphs,graphdrawing,quotes} 
+\usetikzlibrary{matrix}
+\usegdlibrary{layered}
+\usegdlibrary{trees}
+
+\addbibresource{template/references.bib}
+
+\begin{document}
+
+\input{template/titlepage.tex}
+
+\begin{multicols}{2}
+
+\input{chapters/0-abstract.tex}
+
+\input{chapters/1-introduction/introduction.tex}
+
+%\input{chapters/2-memory-optimization-oracle}
+
+%\input{chapters/3-capture-groups-optimization-virtual-tree}
+
+%\input{chapters/4-polynomial-time-atomic-groups}
+
+\end{multicols}
+
+% \newpage
+% \appendix
+% \renewcommand{\thesection}{\Alph{section}}
+% 
+% \input{appendix/A-backtracking-optimization}
+% 
+% \newpage
+% \input{appendix/B-capture-groups-optimization-virtual-tree}
+
+\newpage
+\printbibliography
+
+\end{document}
