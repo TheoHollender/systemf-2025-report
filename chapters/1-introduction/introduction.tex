@@ -12,9 +12,14 @@ time complexity and which has $O(|r|)$ nodes.
 
 \input{chapters/1-introduction/sample-nfas.tex}
 
+We say that an $\epsilon$ transition (or a free move)
+is an edge that does not consume a character.
+
+\subsection*{Capturing Groups}
+
 In the context of a regex, a capturing group $(X)$ can be used for the
 extraction of subpatterns in a string. For example, one could use the regex
-$(\textbackslash d \{ 4 \})-(\textbackslash d \{ 2 \})-(\textbackslash d \{ 2 \})$
+$\texttt{(\textbackslash d\{4\})-(\textbackslash d\{2\})-(\textbackslash d\{2\})}$
 to extract the year, month and day from a date in YYYY-MM-DD format.
 
 To account for this, some special nodes are added to the NFA that
@@ -24,7 +29,102 @@ of the string at which it entered the group $1$.
 
 \input{chapters/1-introduction/capture-nfa.tex}
 
-\subsection{PikeVM Algorithm}
+The previous paper from the lab \cite{systemf_linear_2024} presented
+a way to maintain capturing groups in $O(|r||s|)$ time and space complexity
+as opposed to the state of the art $O(|r|^2|s|)$ time and $O(|r|^2)$ space
+complexity.
 
-% TODO write some introduction about NFA, thread, priority, bytecode
-% TODO also explain why there exists O(r) threads
+The solution involved maintaining a set of linked lists, which shared many
+redundant informations. This project presents a way to exploit this redundant 
+information using Virtual Trees \cite{spike1236_virtual_2025} to reach an
+$O(|r||s|)$ time complexity and $O(|r|^2)$ space complexity (See Section
+\ref{sec:capture-groups-optimization-virtual-tree}).
+
+\subsection*{Lookarounds}
+
+Another feature that this project focuses on is lookarounds. It allows
+the regex to search for a subpattern before or after the current
+string position without consuming the characters.
+
+For example, the regex \texttt{b(?=a)} will the search for the letter $b$
+followed by the letter $a$, without including the letter $a$ in the match.
+
+The previous paper from the lab \cite{systemf_linear_2024} presented a way
+to include that feature in the NFA by creating a lookup table for every
+lookaround, known as its boolean oracle. This table contains one boolean per
+potential starting position, whether the lookaround succeeds.
+
+\input{chapters/1-introduction/lookaround-nfa.tex}
+
+The computation and storage of these tables requires a time complexity of $O(|r||s|)$
+and a space complexity of $O(|r||s|)$. My project focused on creating a new algorithm
+that has a smaller space complexity of $O(|r| \sqrt{|s|})$ in exchange for a time
+complexity of $O(|r||s| D)$, where $D$ is the maximum number of nested lookarounds
+(See Section \ref{sec:memory-optimization-oracle}).
+
+\subsection*{Atomic Groups}
+
+In the context of a regex, An edge has a higher priority than another
+edge going out of the same node if it is explored first by the backtracking engine.
+A match is of higher priority than another match if it is found before
+the other by the backtracking engine. For example, in $e_1|e_2$, $e_1$ has a higher
+priority than $e_2$. For the greedy quantifier $e^*$, the engine prioritizes
+matching the subpattern $e$ as many times as possible before continuing to the next
+part of the pattern.
+
+\input{chapters/1-introduction/priority-nfa.tex}
+
+To avoid the exponential time of backtracking algorithms, many semantics provide
+a special feature known as Atomic Groups. An Atomic Group is a group \texttt{(?>X)} that
+only matches the highest priority match and discards all other matches.
+
+For example, if we take the regex \texttt{(?>(b*|.))b} and try to match \texttt{bb},
+it won't find any match as the atomic group will consume all the b's, leaving none
+for the last character of the pattern. On the other hand, if try to match \texttt{cb},
+then it will succeed and the match will be the entire string.
+
+It was shown that Atomic Groups may be used for Memoized Backtracking Engines
+\cite{weirich_efficient_2024} in the case of NFA that do not have $\epsilon$
+loops. This paper also states that that algorithm can easily be adapted to
+both ECMAScript and Rust Semantics. During this project, we emitted doubts
+on the existence of the second adaptation (at least for the stated time and
+space complexity) and propose an example where we believe the adaptation
+isn't as direct as stated (See Section \ref{sec:lookarounds-example}).
+
+Using some of the tools described in the paper, this project presents
+a new algorithm to adapt atomic groups for the PikeVM in ECMAScript Semantics
+in $O(|r| |s|)$ time and $O(|r| |s|)$ space using a new oracle that
+enforces that the thread follows the path towards its highest priority
+match (See Section \ref{sec:lookarounds-linear-time-ecmascript}).
+
+This project also conjectures that it should be possible in $\tilde{O}(|r||s|)$
+time and $\tilde{O}(|r||s|)$ space to do the same technique for the
+Rust Semantics using new tools such as Dominator Trees (See Section
+\ref{sec:lookarounds-dominator-tree-conjecture}).
+
+\subsection*{NFA Simulation and PikeVM}
+
+More recent regexes engine, such as the PikeVM that we study in this project,
+use an algorithm known as NFA Simulation. Instead of choosing one path in
+the NFA and backtracking if it ends up failing to find a match, this algorithm
+tracks every possible valid state of the NFA at the same time
+\cite{thompson_programming_1968} \cite{russ_regular_2009}.
+
+When the algorithm reads a character, it takes the list of active states,
+known as threads and tries to find how all these states evolve :
+\begin{itemize}
+    \item First, it tries to apply all possible free moves.
+    \item Then it tries to consume the character for all the threads.
+\end{itemize}
+\input{chapters/1-introduction/threads-nfa.tex}
+
+In particular, since the NFA is of size $O(|r|)$, there are only $O(|r|)$
+active threads at any point in time (you don't maintain two threads that are
+on the same node at the same time as they have the same future, and so only
+the highest priority thread matters).
+
+To make the regex matching fast, the PikeVM algorithm treats the regex
+as a program, turning the NFA into bytecode, where each instruction tells
+the engine how to continue matching from the state.
+
+\input{chapters/1-introduction/bytecode.tex}

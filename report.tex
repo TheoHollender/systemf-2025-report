@@ -5,14 +5,17 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}  % For general image handling
 \usepackage{geometry}  % To adjust margins for the front page
+\usepackage{cleveref}
 
 \usepackage{tikz}
 \usepackage{textcomp}
 \usepackage{hyperref}
 \usepackage{multicol}
+\usepackage{tabularx}
 \usepackage[backend=biber, style=numeric]{biblatex}
 \usetikzlibrary{arrows.meta,graphs,graphdrawing,quotes} 
 \usetikzlibrary{matrix}
+\usetikzlibrary{automata}
 \usegdlibrary{layered}
 \usegdlibrary{trees}
 
@@ -20,18 +23,28 @@
 
 \begin{document}
 
+% Container chapters/0-abstract.tex
 \input{template/titlepage.tex}
 
 \begin{multicols}{2}
 
-\input{chapters/0-abstract.tex}
-
 \input{chapters/1-introduction/introduction.tex}
 
+\input{chapters/2-timeline.tex}
+
+\input{chapters/3-capture-groups-optimization-virtual-tree.tex}
 %\input{chapters/2-memory-optimization-oracle}
 
-%\input{chapters/3-capture-groups-optimization-virtual-tree}
+\section{Memory Optimization of Lookaround Oracle}
+\label{sec:memory-optimization-oracle}
 
+\section{Lookarounds}
+\subsection{POC Bad Example}
+\label{sec:lookarounds-example}
+\subsection{Linear Time Lookarounds for PikeVM in ECMAScript Semantics}
+\label{sec:lookarounds-linear-time-ecmascript}
+\subsection{Dominator Tree Conjecture}
+\label{sec:lookarounds-dominator-tree-conjecture}
 %\input{chapters/4-polynomial-time-atomic-groups}
 
 \end{multicols}

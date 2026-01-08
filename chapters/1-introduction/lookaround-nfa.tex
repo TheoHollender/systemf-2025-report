@@ -1,0 +1,26 @@
+
+\begin{center}
+    \begin{tikzpicture}
+        \node[draw, circle] (nodeb) at (0, 0) {};
+        \node[draw, inner sep=0.5, align=center] (nodea) at (3.5, 0) {
+            \begin{tikzpicture}
+                \node[draw, circle, inner sep=3.33pt] (root) at (0, 0) {};
+                \draw[->] ([xshift=-16pt]root.west) -- (root);
+                \draw[->] (root) -- node[pos=0.2, inner sep=3.33pt, above] (a) {$a$} ([xshift=16pt]root.east);
+                \node (space) at (0, -0.4) {};
+            \end{tikzpicture} \\
+
+            \begin{tabular}{c|c|c|c|c|c}
+                \hline
+                Index & 0 & 1 & 2 & 3 & 4 \\ \hline
+                Succeeds & \cmark & \xmark & \cmark & \xmark & \xmark \\
+            \end{tabular}
+        };
+
+        \draw[->] ([xshift=-16pt]nodeb.west) -- (nodeb);
+        \draw[->] (nodeb) -- node[pos=0.2, above] (b) {$b$} (nodea);
+        \draw[->] (nodea) -- ([xshift=16pt]nodea.east);
+    \end{tikzpicture} \\ \vspace{0.3ex}
+    \textit{NFA construction for \texttt{b(?=a)} against string \texttt{abac}} \\
+    \textit{The Lookaround succeeds if the character at that index is an }\texttt{a}
+\end{center}

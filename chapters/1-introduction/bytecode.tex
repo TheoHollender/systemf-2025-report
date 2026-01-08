@@ -1,0 +1,26 @@
+\begin{center}
+    \begin{tikzpicture}
+        \node[draw, circle] (root)  at (0, 0) {\texttt{0}};
+        \node[draw, circle] (up1)   at (1, 0.5) {\texttt{1}};
+        \node[draw, circle] (down1) at (1, -0.5) {\texttt{3}};
+        \node[draw, circle] (up2)   at (2, 0.5) {\texttt{2}};
+        \node[draw, circle] (down2) at (2, -0.5) {\texttt{4}};
+        \node[draw, circle, accepting] (exit)  at (3, 0) {\texttt{5}};
+
+        \draw[->] (root) -- (up1);
+        \draw[->] (root) -- (down1);
+        \draw[->] (up1) -- node[pos=0.2, above] (a1) {$a$} (up2);
+        \draw[->] (down1) -- node[pos=0.2, above] (a2) {$a$} (down2);
+        \draw[->] (up2) -- node[pos=0.7, above] (b1) {$b$} (exit);
+        \draw[->] (down2) -- node[pos=0.1, above] (c1) {$c$} (exit);
+    \end{tikzpicture} \\ \vspace{1ex}
+    \begin{tabular}{l l}
+        \texttt{0:} & \texttt{FORK 1 3} \\
+        \texttt{1:} & \texttt{CONSUME 2 \textnormal{a}} \\
+        \texttt{2:} & \texttt{CONSUME 5 \textnormal{b}} \\
+        \texttt{3:} & \texttt{CONSUME 4 \textnormal{a}} \\
+        \texttt{4:} & \texttt{CONSUME 5 \textnormal{c}} \\
+        \texttt{5:} & \texttt{ACCEPT}
+    \end{tabular} \\ \vspace{0.3ex}
+    \textit{Example bytecode for \textsc{(ab|ac)}}
+\end{center}
