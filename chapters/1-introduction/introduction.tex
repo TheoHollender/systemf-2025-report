@@ -46,7 +46,7 @@ Another feature that this project focuses on is lookarounds. It allows
 the regex to search for a subpattern before or after the current
 string position without consuming the characters.
 
-For example, the regex \texttt{b(?=a)} will the search for the letter $b$
+For example, the regex \texttt{b(?=a)} will search for the letter $b$
 followed by the letter $a$, without including the letter $a$ in the match.
 
 The previous paper from the lab \cite{systemf_linear_2024} presented a way
@@ -64,7 +64,7 @@ complexity of $O(|r||s| D)$, where $D$ is the maximum number of nested lookaroun
 
 \subsection*{Atomic Groups}
 
-In the context of a regex, An edge has a higher priority than another
+In the context of a regex, an edge has a higher priority than another
 edge going out of the same node if it is explored first by the backtracking engine.
 A match is of higher priority than another match if it is found before
 the other by the backtracking engine. For example, in $e_1|e_2$, $e_1$ has a higher
@@ -80,14 +80,14 @@ only matches the highest priority match and discards all other matches.
 
 For example, if we take the regex \texttt{(?>(b*|.))b} and try to match \texttt{bb},
 it won't find any match as the atomic group will consume all the b's, leaving none
-for the last character of the pattern. On the other hand, if try to match \texttt{cb},
+for the last character of the pattern. On the other hand, if we try to match \texttt{cb},
 then it will succeed and the match will be the entire string.
 
 It was shown that Atomic Groups may be used for Memoized Backtracking Engines
 \cite{weirich_efficient_2024} in the case of NFA that do not have $\epsilon$
-loops. This paper also states that that algorithm can easily be adapted to
-both ECMAScript and Rust Semantics. During this project, we emitted doubts
-on the existence of the second adaptation (at least for the stated time and
+loops. This paper also states that the algorithm can easily be adapted to
+both ECMAScript and Rust Semantics. During this project, we expressed doubts
+regarding the existence of the second adaptation (at least for the stated time and
 space complexity) and propose an example where we believe the adaptation
 isn't as direct as stated (See Section \ref{sec:lookarounds-example}).
 
@@ -111,11 +111,8 @@ tracks every possible valid state of the NFA at the same time
 \cite{thompson_programming_1968} \cite{russ_regular_2009}.
 
 When the algorithm reads a character, it takes the list of active states,
-known as threads and tries to find how all these states evolve :
-\begin{itemize}
-    \item First, it tries to apply all possible free moves.
-    \item Then it tries to consume the character for all the threads.
-\end{itemize}
+known as threads and first applies all possible free moves before
+consuming the character for all active threads.
 \input{chapters/1-introduction/threads-nfa.tex}
 
 In particular, since the NFA is of size $O(|r|)$, there are only $O(|r|)$

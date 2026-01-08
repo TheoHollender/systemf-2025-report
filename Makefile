@@ -4,7 +4,8 @@ LATEX_COMPILER = lualatex
 LATEX_FLAGS    = -interaction=nonstopmode --shell-escape
 
 CHAPTERS= \
-	chapters/**/*.tex
+	chapters/**/*.tex \
+	chapters/*.tex
 TEMPLATE=template/commands.tex \
 	template/format.tex \
 	template/preamble.tex \
