@@ -46,7 +46,7 @@ regular expression $|r|$ and the size of the string $|s|$, $N = O(|s||r|)$. The 
 be of the order of $O(|r|)$, which means $K = O(|r||s|)$ and the time complexity is $O(|r|^2|s|)$. 
 Since there are at most $|r|$ threads at any point in time, the space complexity is $O(|r|K) = O(|r|^2)$.
 
-\subsection*{Linked List Data Structure}
+\subsection{Linked List Data Structure}
 
 The previous paper from the lab \cite{systemf_linear_2024} described another possible data structure that would
 allow for a better time complexity of $O(|s||r|)$ in exchange for a space complexity of $O(|s||r|)$.
@@ -102,10 +102,10 @@ After these $7$ operations, we obtain the following memory representation for th
 Since there are at most $O(|r||s|)$ such operations and each operation takes both $O(1)$ in time
 and space complexity, the total time and space complexity during the matching is $O(|r||s|)$.
 
-\subsection*{Motivation behind optimization}
+\subsection{Motivation behind optimization}
 
 If we look at the previous example, and imagine now that thread $t_2$ (which owns array $A_2$) fails,
-then there would we two parts that we would be interested in optimizing :
+then there would be two parts that we would be interested in optimizing :
 \begin{itemize}
     \item The branch from the root to the head of $A_2$, which should be optimized away as this part of the memory
     will never be reused.
@@ -116,7 +116,7 @@ then there would we two parts that we would be interested in optimizing :
 Below, these two operations will be respectively called \textbf{Leaf Removal} and \textbf{Branch
 Contraction}, and the compressed tree will be called a \textbf{Virtual Tree}.
 
-\subsection*{Virtual Tree}
+\subsection{Virtual Tree}
 
 \begin{definition}
     Let us consider a tree $T = (V, E)$ rooted at the node $r$. The virtual tree
@@ -127,7 +127,7 @@ Contraction}, and the compressed tree will be called a \textbf{Virtual Tree}.
         \item \textbf{Leaf Removal: } Take a leaf $l$ of the rooted tree such that
         $l \not \in S$ and remove that node from the tree.
         \item \textbf{Branch Contraction: } Take a node $n \neq r$ such that it has
-        a single child and and such that $n \not \in S$, and remove that node from
+        a single child and such that $n \not \in S$, and remove that node from
         the tree. After that, add an edge between the parent and child of $n$.
     \end{itemize}
 \end{definition}
@@ -203,12 +203,12 @@ that has $O(|S|)$ nodes. Since our set $S$ is supposed to represent the head of 
 linked lists of the active threads and since there are $O(|r|)$ active threads at any point in time, that
 compressed version of the linked list has $O(|r|)$ nodes at any point in time. 
 
-\subsection*{Squashing Modifications}
+\subsection{Squashing Modifications}
 
 It remains to show what to do with the modifications on the branches that we contract.
-If we look at the smallest possible example with a single linked list with two modifications,
-there isn't much that can be done except keeping the two modifications in a list (here, a
-doubly-linked list).
+If we look at the smallest possible example with a single linked list with two modifications
+on distinct cells, there is no optimization possible, so we will store the two modifications
+in a doubly-linked list.
 
 \begin{center}
     \begin{tikzpicture}
@@ -282,7 +282,7 @@ Combining an incomplete form and a complete form can be done in $O(L)$, where $L
 length of the incomplete form by iterating over it. Combining two complete forms
 can be done in $O(K)$ by iterating over one of the two complete forms.
 
-\subsection*{Complexity}
+\subsection{Complexity}
 
 \begin{lemma}
     The above solution has a $O(|r|^2)$ space complexity.
@@ -323,7 +323,7 @@ time from the potential). That way, the operation can be amortized over time.
         \item When a combination happens between an incomplete form of length $L$ and a complete form,
         $\Psi_I$ is decremented by $L$ and $\Psi_C$ stays constant. The combination takes $O(L)$ time,
         but since $L$ was taken from $\Psi_I$, this operation takes $O(1)$ time.
-        \item When a combination happens between two complete form, it takes $O(K)$ times and decrements
+        \item When a combination happens between two complete forms, it takes $O(K)$ times and decrements
         $\Psi_C$ by $K$ and so it also takes $O(1)$ time.
     \end{itemize}
 

@@ -15,7 +15,7 @@ time complexity and which has $O(|r|)$ nodes.
 We say that an $\epsilon$ transition (or a free move)
 is an edge that does not consume a character.
 
-\subsection*{Capturing Groups}
+\subsection{Capturing Groups}
 
 In the context of a regex, a capturing group $(X)$ can be used for the
 extraction of subpatterns in a string. For example, one could use the regex
@@ -34,13 +34,13 @@ a way to maintain capturing groups in $O(|r||s|)$ time and space complexity
 as opposed to the state of the art $O(|r|^2|s|)$ time and $O(|r|^2)$ space
 complexity.
 
-The solution involved maintaining a set of linked lists, which shared many
-redundant informations. This project presents a way to exploit this redundant 
+The solution involved maintaining a set of linked lists, which shared a lot of
+redundant information. This project presents a way to exploit this redundant 
 information using Virtual Trees \cite{spike1236_virtual_2025} to reach an
 $O(|r||s|)$ time complexity and $O(|r|^2)$ space complexity (See Section
 \ref{sec:capture-groups-optimization-virtual-tree}).
 
-\subsection*{Lookarounds}
+\subsection{Lookarounds}
 
 Another feature that this project focuses on is lookarounds. It allows
 the regex to search for a subpattern before or after the current
@@ -58,11 +58,11 @@ potential starting position, whether the lookaround succeeds.
 
 The computation and storage of these tables requires a time complexity of $O(|r||s|)$
 and a space complexity of $O(|r||s|)$. My project focused on creating a new algorithm
-that has a smaller space complexity of $O(|r| \sqrt{|s|})$ in exchange for a time
+that has a smaller space complexity of $O(|r|\sqrt{|s|})$ in exchange for a time
 complexity of $O(|r||s| D)$, where $D$ is the maximum number of nested lookarounds
 (See Section \ref{sec:memory-optimization-oracle}).
 
-\subsection*{Atomic Groups}
+\subsection{Atomic Groups}
 
 In the context of a regex, an edge has a higher priority than another
 edge going out of the same node if it is explored first by the backtracking engine.
@@ -102,9 +102,9 @@ time and $\tilde{O}(|r||s|)$ space to do the same technique for the
 Rust Semantics using new tools such as Dominator Trees (See Section
 \ref{sec:lookarounds-dominator-tree-conjecture}).
 
-\subsection*{NFA Simulation and PikeVM}
+\subsection{NFA Simulation and PikeVM}
 
-More recent regexes engine, such as the PikeVM that we study in this project,
+More recent regex engines, such as the PikeVM that we study in this project,
 use an algorithm known as NFA Simulation. Instead of choosing one path in
 the NFA and backtracking if it ends up failing to find a match, this algorithm
 tracks every possible valid state of the NFA at the same time

@@ -28,6 +28,7 @@
 \begin{document}
 
 % Container chapters/0-abstract.tex
+\setcounter{tocdepth}{1} % Only display sections
 \input{template/titlepage.tex}
 
 \begin{multicols}{2}
@@ -37,18 +38,17 @@
 \input{chapters/2-timeline.tex}
 
 \input{chapters/3-capture-groups-optimization-virtual-tree.tex}
-%\input{chapters/2-memory-optimization-oracle}
 
-\section{Memory Optimization of Lookaround Oracle}
-\label{sec:memory-optimization-oracle}
+\input{chapters/4-memory-optimization-oracle.tex}
 
-\section{Lookarounds}
+\section{Atomic Groups}
 \subsection{POC Bad Example}
 \label{sec:lookarounds-example}
 \subsection{Linear Time Lookarounds for PikeVM in ECMAScript Semantics}
 \label{sec:lookarounds-linear-time-ecmascript}
 \subsection{Dominator Tree Conjecture}
 \label{sec:lookarounds-dominator-tree-conjecture}
+\cite{dominator_tree_1979}
 %\input{chapters/4-polynomial-time-atomic-groups}
 
 \end{multicols}
